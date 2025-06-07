@@ -1,8 +1,17 @@
-
-import { Calendar, BarChart3, Table, Eye, Rss, TrendingUp, Settings, Share, Plus } from 'lucide-react';
-import { useState } from 'react';
-import ContentModal from './ContentModal';
-import { Post } from '@/types/post';
+import {
+  Calendar,
+  BarChart3,
+  Table,
+  Eye,
+  Rss,
+  TrendingUp,
+  Settings,
+  Share,
+  Plus,
+} from "lucide-react";
+import { useState } from "react";
+import ContentModal from "./ContentModal";
+import { Post } from "@/types/post";
 
 interface TopNavigationProps {
   activeTab: string;
@@ -13,12 +22,12 @@ const TopNavigation = ({ activeTab, onTabChange }: TopNavigationProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const tabs = [
-    { name: 'Calendar', icon: Calendar },
-    { name: 'Board', icon: BarChart3 },
-    { name: 'Table', icon: Table },
-    { name: 'Preview', icon: Eye },
-    { name: 'Feed', icon: Rss },
-    { name: 'Analytics', icon: TrendingUp },
+    { name: "Calendar", icon: Calendar },
+    { name: "Board", icon: BarChart3 },
+    { name: "Table", icon: Table },
+    { name: "Preview", icon: Eye },
+    { name: "Feed", icon: Rss },
+    { name: "Analytics", icon: TrendingUp },
   ];
 
   const handleAddContent = () => {
@@ -26,11 +35,18 @@ const TopNavigation = ({ activeTab, onTabChange }: TopNavigationProps) => {
   };
 
   const handleModalSubmit = (formData: Partial<Post>) => {
-    console.log('Form submitted from top nav:', formData);
+    console.log("Form submitted from top nav:", formData);
   };
 
   const handleModalClose = () => {
     setIsModalOpen(false);
+  };
+
+  const handleTabClick = (tab) => {
+    console.log("Tab clicked:", tab);
+    if (onTabChange) {
+      onTabChange(tab);
+    }
   };
 
   return (
@@ -46,10 +62,12 @@ const TopNavigation = ({ activeTab, onTabChange }: TopNavigationProps) => {
                   <div className="bg-gray-400 rounded-sm"></div>
                   <div className="bg-gray-400 rounded-sm"></div>
                 </div>
-                <h1 className="text-xl font-semibold text-gray-900">Beyond UI</h1>
+                <h1 className="text-xl font-semibold text-gray-900">
+                  Beyond UI
+                </h1>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-3">
               <button className="p-2 text-gray-400 hover:text-gray-600">
                 <Settings className="w-5 h-5" />
@@ -58,7 +76,7 @@ const TopNavigation = ({ activeTab, onTabChange }: TopNavigationProps) => {
                 <Share className="w-4 h-4" />
                 <span>Share</span>
               </button>
-              <button 
+              <button
                 onClick={handleAddContent}
                 className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
               >
@@ -74,11 +92,11 @@ const TopNavigation = ({ activeTab, onTabChange }: TopNavigationProps) => {
             {tabs.map((tab) => (
               <button
                 key={tab.name}
-                onClick={() => onTabChange(tab.name)}
+                onClick={() => handleTabClick(tab.name)}
                 className={`flex items-center space-x-2 px-3 py-3 border-b-2 transition-colors ${
                   activeTab === tab.name
-                    ? 'border-blue-600 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700'
+                    ? "border-blue-600 text-blue-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700"
                 }`}
               >
                 <tab.icon className="w-4 h-4" />
@@ -96,7 +114,7 @@ const TopNavigation = ({ activeTab, onTabChange }: TopNavigationProps) => {
         </div>
       </div>
 
-      <ContentModal 
+      <ContentModal
         isOpen={isModalOpen}
         onClose={handleModalClose}
         onSubmit={handleModalSubmit}
