@@ -85,14 +85,20 @@ const KanbanBoard = () => {
       ],
     },
     {
-      id: "review",
-      title: "Review Ready",
+      id: "pending",
+      title: "Pending",
       count: 0,
       posts: [],
     },
     {
       id: "approved",
       title: "Approved",
+      count: 0,
+      posts: [],
+    },
+    {
+      id: "closed",
+      title: "Closed",
       count: 0,
       posts: [],
     },
@@ -210,86 +216,90 @@ const KanbanBoard = () => {
   return (
     <>
       <DragDropContext onDragEnd={onDragEnd}>
-        <div className="grid grid-cols-4 gap-6">
-          {columns.map((column) => (
-            <div key={column.id} className="bg-white rounded-lg">
-              <div className="flex items-center justify-between p-4 border-b border-gray-200">
-                <div className="flex items-center space-x-2">
-                  <h3 className="font-medium text-gray-900">{column.title}</h3>
-                  <span className="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-full">
-                    {column.count}
-                  </span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <button
-                    onClick={() => handleAddContent(column.id)}
-                    className="text-gray-400 hover:text-gray-600"
-                  >
-                    <Plus className="w-4 h-4" />
-                  </button>
-                  <button className="text-gray-400 hover:text-gray-600">
-                    <MoreHorizontal className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-
-              <Droppable droppableId={column.id}>
-                {(provided, snapshot) => (
-                  <div
-                    ref={provided.innerRef}
-                    {...provided.droppableProps}
-                    className={`p-4 min-h-[500px] ${
-                      snapshot.isDraggingOver ? "bg-gray-50" : ""
-                    }`}
-                  >
-                    {column.posts.length === 0 ? (
-                      <div className="text-center py-20">
-                        <div className="w-16 h-16 bg-gray-100 rounded-lg mx-auto mb-4 flex items-center justify-center">
-                          <div className="w-8 h-8 bg-gray-300 rounded"></div>
-                        </div>
-                        <p className="text-gray-500 text-sm mb-4">
-                          No content currently. Board is empty
-                        </p>
-                        <button
-                          onClick={() => handleAddContent(column.id)}
-                          className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700"
-                        >
-                          Add Content
-                        </button>
-                      </div>
-                    ) : (
-                      <div className="space-y-4">
-                        {column.posts.map((post, index) => (
-                          <Draggable
-                            key={post.id}
-                            draggableId={post.id}
-                            index={index}
-                          >
-                            {(provided, snapshot) => (
-                              <div
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                                className={
-                                  snapshot.isDragging
-                                    ? "rotate-3 shadow-lg"
-                                    : ""
-                                }
-                                onClick={() => handleEditPost(post)}
-                              >
-                                <PostCard post={post} />
-                              </div>
-                            )}
-                          </Draggable>
-                        ))}
-                      </div>
-                    )}
-                    {provided.placeholder}
+        <div className="overflow-x-auto pb-4">
+          <div className="flex gap-4 min-w-max">
+            {columns.map((column) => (
+              <div key={column.id} className="bg-white rounded-lg w-[300px]">
+                <div className="flex items-center justify-between p-4 border-b border-gray-200">
+                  <div className="flex items-center space-x-2">
+                    <h3 className="font-medium text-gray-900">
+                      {column.title}
+                    </h3>
+                    <span className="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-full">
+                      {column.count}
+                    </span>
                   </div>
-                )}
-              </Droppable>
-            </div>
-          ))}
+                  <div className="flex items-center space-x-2">
+                    <button
+                      onClick={() => handleAddContent(column.id)}
+                      className="text-gray-400 hover:text-gray-600"
+                    >
+                      <Plus className="w-4 h-4" />
+                    </button>
+                    <button className="text-gray-400 hover:text-gray-600">
+                      <MoreHorizontal className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+
+                <Droppable droppableId={column.id}>
+                  {(provided, snapshot) => (
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.droppableProps}
+                      className={`p-4 min-h-[500px] ${
+                        snapshot.isDraggingOver ? "bg-gray-50" : ""
+                      }`}
+                    >
+                      {column.posts.length === 0 ? (
+                        <div className="text-center py-20">
+                          <div className="w-16 h-16 bg-gray-100 rounded-lg mx-auto mb-4 flex items-center justify-center">
+                            <div className="w-8 h-8 bg-gray-300 rounded"></div>
+                          </div>
+                          <p className="text-gray-500 text-sm mb-4">
+                            No content currently. Board is empty
+                          </p>
+                          <button
+                            onClick={() => handleAddContent(column.id)}
+                            className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700"
+                          >
+                            Add Content
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="space-y-4">
+                          {column.posts.map((post, index) => (
+                            <Draggable
+                              key={post.id}
+                              draggableId={post.id}
+                              index={index}
+                            >
+                              {(provided, snapshot) => (
+                                <div
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  {...provided.dragHandleProps}
+                                  className={
+                                    snapshot.isDragging
+                                      ? "rotate-3 shadow-lg"
+                                      : ""
+                                  }
+                                  onClick={() => handleEditPost(post)}
+                                >
+                                  <PostCard post={post} />
+                                </div>
+                              )}
+                            </Draggable>
+                          ))}
+                        </div>
+                      )}
+                      {provided.placeholder}
+                    </div>
+                  )}
+                </Droppable>
+              </div>
+            ))}
+          </div>
         </div>
       </DragDropContext>
 
