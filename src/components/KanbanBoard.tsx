@@ -219,7 +219,7 @@ const KanbanBoard = () => {
         <div className="overflow-x-auto pb-4">
           <div className="flex gap-4 min-w-max">
             {columns.map((column) => (
-              <div key={column.id} className="bg-white rounded-lg w-[300px]">
+              <div key={column.id} className="bg-white rounded-lg w-[320px]">
                 <div className="flex items-center justify-between p-4 border-b border-gray-200">
                   <div className="flex items-center space-x-2">
                     <h3 className="font-medium text-gray-900">
