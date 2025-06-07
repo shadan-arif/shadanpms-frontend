@@ -8,6 +8,12 @@ import {
   Smile,
   Paperclip,
   Send,
+  Bold,
+  Italic,
+  Underline,
+  List,
+  ListOrdered,
+  Link,
 } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Post } from "@/types/post";
@@ -242,8 +248,8 @@ const ContentModal = ({
       <DialogContent className="max-w-6xl h-[90vh] p-0 overflow-hidden">
         <div className="flex h-full">
           {/* Left Panel - Main Content */}
-          <div className="flex-1 flex flex-col">
-            {/* Header */}
+          <div className="flex-1 flex flex-col h-full max-h-[90vh]">
+            {/* Header - Fixed at top */}
             <div className="flex items-center justify-between p-4 border-b border-gray-200">
               <div className="flex items-center gap-4">
                 <Button
@@ -286,10 +292,10 @@ const ContentModal = ({
               </div>
             </div>
 
-            {/* Content */}
+            {/* Content - Scrollable and takes remaining space */}
             <div className="flex-1 overflow-auto">
               <div className="p-6">
-                {/* Title - Now editable */}
+                {/* Title */}
                 <div className="mb-8 text-center">
                   <Input
                     value={title}
@@ -350,14 +356,6 @@ const ContentModal = ({
                         </>
                       )}
                     </div>
-
-                    {/* Notes Section */}
-                    <Textarea
-                      placeholder="Write notes for your editors, ideas, examples..."
-                      value={notes}
-                      onChange={(e) => handleChange("notes", e.target.value)}
-                      className="min-h-[120px] resize-none border-0 bg-transparent text-gray-500 placeholder-gray-400"
-                    />
                   </div>
 
                   {/* Right Column */}
@@ -427,9 +425,47 @@ const ContentModal = ({
                 </div>
               </div>
             </div>
+
+            {/* Notes Section - Fixed at bottom */}
+            <div className="border-t border-gray-200 p-4 bg-white">
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-sm font-medium text-gray-700">Notes</h3>
+              </div>
+
+              {/* Formatting Toolbar */}
+              <div className="flex items-center gap-1 mb-2 border border-gray-200 rounded-md p-1">
+                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                  <Bold className="h-4 w-4" />
+                </Button>
+                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                  <Italic className="h-4 w-4" />
+                </Button>
+                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                  <Underline className="h-4 w-4" />
+                </Button>
+                <div className="h-4 w-px bg-gray-200 mx-1"></div>
+                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                  <List className="h-4 w-4" />
+                </Button>
+                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                  <ListOrdered className="h-4 w-4" />
+                </Button>
+                <div className="h-4 w-px bg-gray-200 mx-1"></div>
+                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                  <Link className="h-4 w-4" />
+                </Button>
+              </div>
+
+              <Textarea
+                placeholder="Write notes for your editors, ideas, examples..."
+                value={notes}
+                onChange={(e) => handleChange("notes", e.target.value)}
+                className="h-20 resize-none border rounded-md"
+              />
+            </div>
           </div>
 
-          {/* Right Panel - Chat and Notes */}
+          {/* Right Panel - Chat */}
           <div className="w-80 border-l border-gray-200 flex flex-col">
             {/* Chat Header */}
             <div className="p-4 border-b border-gray-200">
