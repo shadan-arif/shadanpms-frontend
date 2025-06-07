@@ -1,65 +1,90 @@
+import { useState, useMemo, useEffect } from "react";
+import { Search, ArrowUpDown } from "lucide-react";
+import { Post } from "@/types/post";
+import ContentModal from "./ContentModal";
 
-import { useState, useMemo } from 'react';
-import { Search, ArrowUpDown } from 'lucide-react';
-import { Post } from '@/types/post';
-import ContentModal from './ContentModal';
+// Interface for props to receive data from parent
+interface TableViewProps {
+  posts?: Post[];
+  onPostUpdate?: (updatedPost: Post) => void;
+}
 
-const TableView = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [sortField, setSortField] = useState<keyof Post>('date');
-  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+const TableView = ({
+  posts: externalPosts,
+  onPostUpdate,
+}: TableViewProps = {}) => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortField, setSortField] = useState<keyof Post>("date");
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Sample posts data - in a real app, this would come from a store/API
-  const samplePosts: Post[] = [
-    {
-      id: '1',
-      title: 'Summer Campaign Launch',
-      date: '2025-01-15',
-      time: '10:00 AM',
-      platforms: ['instagram', 'facebook'],
-      image: 'https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=150&h=150&fit=crop',
-      author: 'John Doe',
-      likes: 45,
-      description: 'Launch our summer campaign across social platforms',
-      notes: 'Remember to include hashtags'
-    },
-    {
-      id: '2',
-      title: 'Product Announcement',
-      date: '2025-01-22',
-      time: '2:00 PM',
-      platforms: ['tiktok', 'instagram'],
-      image: 'https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=150&h=150&fit=crop',
-      author: 'Jane Smith',
-      likes: 32,
-      description: 'Announce our new product line',
-      notes: 'Use trending music'
-    },
-    {
-      id: '3',
-      title: 'Holiday Special',
-      date: '2025-01-08',
-      time: '9:00 AM',
-      platforms: ['facebook', 'tiktok'],
-      image: 'https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=150&h=150&fit=crop',
-      author: 'Mike Johnson',
-      likes: 67,
-      description: 'Special holiday promotion',
-      notes: 'Include discount code'
+  // Use local state if no external posts are provided
+  const [localPosts, setLocalPosts] = useState<Post[]>([]);
+
+  // Combine all posts from all columns in the board
+  const allPosts = useMemo(() => {
+    return externalPosts || localPosts;
+  }, [externalPosts, localPosts]);
+
+  // Initialize with sample data if no external posts
+  useEffect(() => {
+    if (!externalPosts) {
+      // Sample posts data - in a real app, this would come from a store/API
+      setLocalPosts([
+        {
+          id: "1",
+          title: "Summer Campaign Launch",
+          date: "2025-01-15",
+          time: "10:00 AM",
+          platforms: ["instagram", "facebook"],
+          image:
+            "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=150&h=150&fit=crop",
+          author: "John Doe",
+          likes: 45,
+          description: "Launch our summer campaign across social platforms",
+          notes: "Remember to include hashtags",
+        },
+        {
+          id: "2",
+          title: "Product Announcement",
+          date: "2025-01-22",
+          time: "2:00 PM",
+          platforms: ["tiktok", "instagram"],
+          image:
+            "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=150&h=150&fit=crop",
+          author: "Jane Smith",
+          likes: 32,
+          description: "Announce our new product line",
+          notes: "Use trending music",
+        },
+        {
+          id: "3",
+          title: "Holiday Special",
+          date: "2025-01-08",
+          time: "9:00 AM",
+          platforms: ["facebook", "tiktok"],
+          image:
+            "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=150&h=150&fit=crop",
+          author: "Mike Johnson",
+          likes: 67,
+          description: "Special holiday promotion",
+          notes: "Include discount code",
+        },
+      ]);
     }
-  ];
+  }, [externalPosts]);
 
   const filteredAndSortedPosts = useMemo(() => {
-    let filtered = samplePosts;
+    let filtered = allPosts;
 
     // Filter by search term
     if (searchTerm) {
-      filtered = filtered.filter(post =>
-        post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        post.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        post.description?.toLowerCase().includes(searchTerm.toLowerCase())
+      filtered = filtered.filter(
+        (post) =>
+          post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          post.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          post.description?.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
@@ -68,23 +93,23 @@ const TableView = () => {
       let aValue = a[sortField];
       let bValue = b[sortField];
 
-      if (typeof aValue === 'string') aValue = aValue.toLowerCase();
-      if (typeof bValue === 'string') bValue = bValue.toLowerCase();
+      if (typeof aValue === "string") aValue = aValue.toLowerCase();
+      if (typeof bValue === "string") bValue = bValue.toLowerCase();
 
-      if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1;
-      if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1;
+      if (aValue < bValue) return sortDirection === "asc" ? -1 : 1;
+      if (aValue > bValue) return sortDirection === "asc" ? 1 : -1;
       return 0;
     });
 
     return filtered;
-  }, [searchTerm, sortField, sortDirection]);
+  }, [searchTerm, sortField, sortDirection, allPosts]);
 
   const handleSort = (field: keyof Post) => {
     if (sortField === field) {
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
     } else {
       setSortField(field);
-      setSortDirection('asc');
+      setSortDirection("asc");
     }
   };
 
@@ -99,13 +124,33 @@ const TableView = () => {
   };
 
   const handleModalSubmit = (formData: Partial<Post>) => {
-    console.log('Table modal submit:', formData);
+    // Create a complete post object by merging the selected post with form data
+    const updatedPost = selectedPost
+      ? { ...selectedPost, ...formData }
+      : (formData as Post);
+
+    // Update the post in the local state if no external handler
+    if (!onPostUpdate && selectedPost) {
+      setLocalPosts((prevPosts) =>
+        prevPosts.map((post) =>
+          post.id === selectedPost.id ? (updatedPost as Post) : post
+        )
+      );
+    }
+    // Use the external handler if provided
+    else if (onPostUpdate && selectedPost) {
+      onPostUpdate(updatedPost as Post);
+    }
+
     handleModalClose();
   };
 
   const getPlatformIcons = (platforms: string[]) => {
-    return platforms.map(platform => (
-      <span key={platform} className="inline-block w-2 h-2 rounded-full bg-blue-500 mr-1"></span>
+    return platforms.map((platform) => (
+      <span
+        key={platform}
+        className="inline-block w-2 h-2 rounded-full bg-blue-500 mr-1"
+      ></span>
     ));
   };
 
@@ -114,7 +159,9 @@ const TableView = () => {
       <div className="bg-white rounded-lg shadow-sm border border-gray-200">
         <div className="p-6">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-semibold text-gray-900">Content Table</h2>
+            <h2 className="text-2xl font-semibold text-gray-900">
+              Content Table
+            </h2>
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               <input
@@ -133,7 +180,7 @@ const TableView = () => {
                 <tr className="border-b border-gray-200">
                   <th className="text-left py-3 px-4">
                     <button
-                      onClick={() => handleSort('title')}
+                      onClick={() => handleSort("title")}
                       className="flex items-center space-x-1 font-medium text-gray-700 hover:text-gray-900"
                     >
                       <span>Title</span>
@@ -142,7 +189,7 @@ const TableView = () => {
                   </th>
                   <th className="text-left py-3 px-4">
                     <button
-                      onClick={() => handleSort('author')}
+                      onClick={() => handleSort("author")}
                       className="flex items-center space-x-1 font-medium text-gray-700 hover:text-gray-900"
                     >
                       <span>Author</span>
@@ -151,7 +198,7 @@ const TableView = () => {
                   </th>
                   <th className="text-left py-3 px-4">
                     <button
-                      onClick={() => handleSort('date')}
+                      onClick={() => handleSort("date")}
                       className="flex items-center space-x-1 font-medium text-gray-700 hover:text-gray-900"
                     >
                       <span>Date</span>
@@ -160,7 +207,7 @@ const TableView = () => {
                   </th>
                   <th className="text-left py-3 px-4">
                     <button
-                      onClick={() => handleSort('time')}
+                      onClick={() => handleSort("time")}
                       className="flex items-center space-x-1 font-medium text-gray-700 hover:text-gray-900"
                     >
                       <span>Time</span>
@@ -170,7 +217,7 @@ const TableView = () => {
                   <th className="text-left py-3 px-4">Platforms</th>
                   <th className="text-left py-3 px-4">
                     <button
-                      onClick={() => handleSort('likes')}
+                      onClick={() => handleSort("likes")}
                       className="flex items-center space-x-1 font-medium text-gray-700 hover:text-gray-900"
                     >
                       <span>Likes</span>
@@ -196,7 +243,9 @@ const TableView = () => {
                             className="w-8 h-8 rounded object-cover"
                           />
                         )}
-                        <span className="font-medium text-gray-900">{post.title}</span>
+                        <span className="font-medium text-gray-900">
+                          {post.title}
+                        </span>
                       </div>
                     </td>
                     <td className="py-3 px-4 text-gray-700">{post.author}</td>
@@ -232,7 +281,8 @@ const TableView = () => {
         isOpen={isModalOpen}
         onClose={handleModalClose}
         onSubmit={handleModalSubmit}
-        initialData={selectedPost || undefined}
+        editingPost={selectedPost}
+        allPosts={allPosts}
       />
     </>
   );

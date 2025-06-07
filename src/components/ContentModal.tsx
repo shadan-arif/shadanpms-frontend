@@ -158,7 +158,7 @@ const ContentModal = ({
       description,
       date: scheduledDate || "Wed, Jan 17, 2025",
       time: scheduledTime || "07:00 AM",
-      platforms: ["tiktok", "instagram", "facebook"],
+      platforms: editingPost?.platforms || ["tiktok", "instagram", "facebook"],
       image:
         uploadedImage ||
         "/lovable-uploads/6cc9ce2f-f1e2-40fe-aeaf-c8c9332f7f84.png",

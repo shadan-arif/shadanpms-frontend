@@ -1,14 +1,13 @@
-
 export interface Post {
   id: string;
   title: string;
-  date: string;
-  time: string;
+  description?: string;
+  date?: string;
+  time?: string;
   platforms: string[];
   image?: string;
-  author: string;
+  author?: string;
   likes: number;
-  description?: string;
   notes?: string;
 }
 

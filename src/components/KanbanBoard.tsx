@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   DragDropContext,
   Droppable,
@@ -17,7 +17,17 @@ interface Column {
   posts: Post[];
 }
 
-const KanbanBoard = () => {
+interface KanbanBoardProps {
+  initialColumns?: Column[];
+  onColumnsChange?: (columns: Column[]) => void;
+  onPostUpdate?: (updatedPost: Post) => void;
+}
+
+const KanbanBoard = ({
+  initialColumns,
+  onColumnsChange,
+  onPostUpdate,
+}: KanbanBoardProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingPost, setEditingPost] = useState<Post | null>(null);
   const [triggerColumnId, setTriggerColumnId] = useState<string>("");
