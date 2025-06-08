@@ -610,28 +610,32 @@ const ContentModal = ({
             {/* Right panel - Chat */}
             <div className="w-80 border-l border-gray-200 flex flex-col">
               {/* Chat tabs */}
-              <div className="bg-gray-100 p-1 flex rounded-none">
-                <button
-                  className={`flex-1 px-3 py-2 text-sm font-medium transition-all ${
-                    activeTab === "internal"
-                      ? "bg-white text-black rounded-md shadow-sm"
-                      : "text-gray-600 hover:text-gray-800"
-                  }`}
-                  onClick={() => setActiveTab("internal")}
-                >
-                  Internal Chat
-                </button>
-                <div className="w-px bg-gray-300 mx-1"></div>
-                <button
-                  className={`flex-1 px-3 py-2 text-sm font-medium transition-all ${
-                    activeTab === "client"
-                      ? "bg-white text-black rounded-md shadow-sm"
-                      : "text-gray-600 hover:text-gray-800"
-                  }`}
-                  onClick={() => setActiveTab("client")}
-                >
-                  Client Chat
-                </button>
+              <div className="p-4 border-b bg-white">
+                <div className="relative bg-gray-100 rounded-full p-1 flex">
+                  <div
+                    className={`absolute top-1 bottom-1 w-1/2 bg-white rounded-full shadow-sm transition-transform duration-200 ease-in-out ${
+                      activeTab === "client" ? "translate-x-full" : ""
+                    }`}
+                  ></div>
+                  <button
+                    className={`relative z-10 flex-1 py-2 px-4 text-sm font-medium transition-colors duration-200 ${
+                      activeTab === "internal"
+                        ? "text-gray-900"
+                        : "text-gray-600"
+                    }`}
+                    onClick={() => setActiveTab("internal")}
+                  >
+                    Internal Chat
+                  </button>
+                  <button
+                    className={`relative z-10 flex-1 py-2 px-4 text-sm font-medium transition-colors duration-200 ${
+                      activeTab === "client" ? "text-gray-900" : "text-gray-600"
+                    }`}
+                    onClick={() => setActiveTab("client")}
+                  >
+                    Client Chat
+                  </button>
+                </div>
               </div>
 
               {/* Chat content */}
