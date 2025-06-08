@@ -91,6 +91,7 @@ const ContentModal = ({
   allPosts = [],
 }: ContentModalProps) => {
   const [title, setTitle] = useState("");
+  const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [description, setDescription] = useState("");
   const [scheduledDate, setScheduledDate] = useState("");
   const [scheduledTime, setScheduledTime] = useState("");
@@ -121,7 +122,7 @@ const ContentModal = ({
 
   useEffect(() => {
     if (editingPost) {
-      setTitle(editingPost.title || "");
+      setTitle(editingPost.title || "Untitled Content");
       setDescription(editingPost.description || "");
       setScheduledDate(editingPost.date || "");
       setScheduledTime(editingPost.time || "");
@@ -143,6 +144,7 @@ const ContentModal = ({
       setNotes("");
       setUploadedImage("");
     }
+    setIsEditingTitle(false);
     setIsDirty(false);
   }, [editingPost, isOpen]);
 
@@ -173,6 +175,20 @@ const ContentModal = ({
       case "notes":
         setNotes(value);
         break;
+    }
+  };
+
+  const handleTitleClick = () => {
+    setIsEditingTitle(true);
+  };
+
+  const handleTitleBlur = () => {
+    setIsEditingTitle(false);
+  };
+
+  const handleTitleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      setIsEditingTitle(false);
     }
   };
 
@@ -230,7 +246,7 @@ const ContentModal = ({
     if (allPosts && allPosts.length > 0 && currentPostIndex > 0) {
       const prevPost = allPosts[currentPostIndex - 1];
       setCurrentPostIndex(currentPostIndex - 1);
-      setTitle(prevPost.title || "");
+      setTitle(prevPost.title || "Untitled Content");
       setDescription(prevPost.description || "");
       setScheduledDate(prevPost.date || "");
       setScheduledTime(prevPost.time || "");
@@ -240,6 +256,7 @@ const ContentModal = ({
       setAutoPost(false);
       setNotes(prevPost.notes || "");
       setUploadedImage(prevPost.image || "");
+      setIsEditingTitle(false);
     }
   };
 
@@ -251,7 +268,7 @@ const ContentModal = ({
     ) {
       const nextPost = allPosts[currentPostIndex + 1];
       setCurrentPostIndex(currentPostIndex + 1);
-      setTitle(nextPost.title || "");
+      setTitle(nextPost.title || "Untitled Content");
       setDescription(nextPost.description || "");
       setScheduledDate(nextPost.date || "");
       setScheduledTime(nextPost.time || "");
@@ -261,6 +278,7 @@ const ContentModal = ({
       setAutoPost(false);
       setNotes(nextPost.notes || "");
       setUploadedImage(nextPost.image || "");
+      setIsEditingTitle(false);
     }
   };
 
@@ -398,9 +416,42 @@ const ContentModal = ({
 
                   {/* Form fields */}
                   <div className="flex-1">
-                    <h1 className="text-xl font-medium mb-4">
-                      {editingPost ? "Edit Content - Idea" : title}
-                    </h1>
+                    <div className="mb-4">
+                      {isEditingTitle ? (
+                        <div className="flex items-center">
+                          <span className="text-xl font-medium text-gray-900 mr-2">
+                            Edit Content -
+                          </span>
+                          <Input
+                            value={title}
+                            onChange={(e) =>
+                              handleChange("title", e.target.value)
+                            }
+                            onBlur={handleTitleBlur}
+                            onKeyDown={handleTitleKeyDown}
+                            className="text-xl font-medium bg-transparent border-none p-0 h-auto focus:ring-0 focus:border-none shadow-none outline-none flex-1"
+                            autoFocus
+                          />
+                        </div>
+                      ) : (
+                        <h1
+                          className="text-xl font-medium cursor-pointer hover:bg-gray-50 p-1 rounded"
+                          onClick={handleTitleClick}
+                          title="Click to edit title"
+                        >
+                          {editingPost ? (
+                            <>
+                              <span>Edit Content - </span>
+                              <span className="underline decoration-dotted decoration-gray-400">
+                                {title}
+                              </span>
+                            </>
+                          ) : (
+                            title
+                          )}
+                        </h1>
+                      )}
+                    </div>
 
                     <div className="space-y-3">
                       {/* Assignee */}
@@ -543,7 +594,7 @@ const ContentModal = ({
                       value={notes}
                       onChange={(e) => handleChange("notes", e.target.value)}
                       placeholder="Write notes for your editors, ideas, examples..."
-                      className="min-h-[100px] resize-none border-gray-200 text-sm w-full"
+                      className="h-[120px] resize-none border-gray-200 text-sm w-full"
                     />
                   </div>
 
