@@ -658,27 +658,29 @@ const ContentModal = ({
                   </div>
                 ) : (
                   <div className="flex-1 overflow-auto">
-                    {currentMessages.map((message) => (
-                      <div
-                        key={message.id}
-                        className={`flex ${
-                          message.isUser ? "justify-end" : "justify-start"
-                        }`}
-                      >
+                    <div className="space-y-3">
+                      {currentMessages.map((message) => (
                         <div
-                          className={`max-w-[80%] rounded-lg p-3 ${
-                            message.isUser
-                              ? "bg-blue-600 text-white"
-                              : "bg-gray-100 text-gray-900"
+                          key={message.id}
+                          className={`flex ${
+                            message.isUser ? "justify-end" : "justify-start"
                           }`}
                         >
-                          <p className="text-sm">{message.text}</p>
-                          <p className="text-xs opacity-70 mt-1">
-                            {message.timestamp}
-                          </p>
+                          <div
+                            className={`max-w-[80%] rounded-lg p-3 ${
+                              message.isUser
+                                ? "bg-blue-600 text-white"
+                                : "bg-gray-100 text-gray-900"
+                            }`}
+                          >
+                            <p className="text-sm">{message.text}</p>
+                            <p className="text-xs opacity-70 mt-1">
+                              {message.timestamp}
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>
