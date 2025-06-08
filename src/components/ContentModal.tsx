@@ -294,10 +294,10 @@ const ContentModal = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-w-6xl p-0 overflow-hidden">
-        <div className="bg-white rounded-lg shadow-lg flex flex-col">
-          {/* Header */}
-          <div className="flex items-center justify-between p-6 pb-4">
+      <DialogContent className="max-w-6xl h-[90vh] p-0 overflow-hidden flex flex-col">
+        <div className="bg-white rounded-lg shadow-lg flex flex-col h-full">
+          {/* Header - Fixed */}
+          <div className="flex items-center justify-between p-6 pb-4 flex-shrink-0">
             <div className="flex items-center gap-4">
               <Button
                 variant="outline"
@@ -345,16 +345,16 @@ const ContentModal = ({
             </div>
           </div>
 
-          <div className="border-t border-gray-200"></div>
+          <div className="border-t border-gray-200 flex-shrink-0"></div>
 
-          {/* Main content area */}
-          <div className="flex flex-1 overflow-hidden">
-            {/* Left panel - Content editor */}
-            <div className="flex-1">
+          {/* Main content area - Flexible */}
+          <div className="flex flex-1 min-h-0">
+            {/* Left panel - Scrollable content */}
+            <div className="flex-1 min-h-0 overflow-y-auto">
               <div className="px-6 pt-4">
                 <div className="flex gap-6 mb-4">
                   {/* Image upload section */}
-                  <div className="flex flex-col">
+                  <div className="flex flex-col flex-shrink-0">
                     <div
                       className="w-56 h-56 border-2 border-dashed border-gray-200 rounded-lg flex flex-col items-center justify-center text-center bg-white cursor-pointer hover:border-gray-300 transition-colors"
                       onClick={() =>
@@ -415,7 +415,7 @@ const ContentModal = ({
                   </div>
 
                   {/* Form fields */}
-                  <div className="flex-1">
+                  <div className="flex-1 min-w-0">
                     <div className="mb-4">
                       {isEditingTitle ? (
                         <div className="flex items-center">
@@ -586,7 +586,7 @@ const ContentModal = ({
                 </div>
               </div>
 
-              {/* Notes section */}
+              {/* Notes section - Now part of scrollable content */}
               <div className="border-t border-gray-200">
                 <div className="py-4 space-y-3">
                   <div className="px-6">
@@ -594,7 +594,12 @@ const ContentModal = ({
                       value={notes}
                       onChange={(e) => handleChange("notes", e.target.value)}
                       placeholder="Write notes for your editors, ideas, examples..."
-                      className="h-[120px] resize-none border-gray-200 text-sm w-full"
+                      className="resize-none border-gray-200 text-sm w-full"
+                      style={{
+                        minHeight: "120px",
+                        height: "auto",
+                      }}
+                      rows={Math.max(5, notes.split("\n").length)}
                     />
                   </div>
 
@@ -655,13 +660,14 @@ const ContentModal = ({
                 </div>
               </div>
 
-              <div className="border-b border-gray-200"></div>
+              {/* Bottom spacer */}
+              <div className="h-6"></div>
             </div>
 
-            {/* Right panel - Chat */}
-            <div className="w-80 border-l border-gray-200 flex flex-col">
+            {/* Right panel - Chat (Fixed) */}
+            <div className="w-80 border-l border-gray-200 flex flex-col flex-shrink-0">
               {/* Chat tabs */}
-              <div className="p-4 border-b bg-white">
+              <div className="p-4 border-b bg-white flex-shrink-0">
                 <div className="relative bg-gray-100 rounded-full p-1 flex">
                   <div
                     className={`absolute top-1 bottom-1 w-1/2 bg-white rounded-full shadow-sm transition-transform duration-200 ease-in-out ${
@@ -690,7 +696,7 @@ const ContentModal = ({
               </div>
 
               {/* Chat content */}
-              <div className="flex-1 p-4 flex flex-col">
+              <div className="flex-1 p-4 flex flex-col min-h-0">
                 {currentMessages.length === 0 ? (
                   <div className="flex-1 flex flex-col items-center justify-center text-center">
                     <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mb-4">
@@ -737,7 +743,7 @@ const ContentModal = ({
               </div>
 
               {/* Message Input */}
-              <div className="p-4 border-t border-gray-200">
+              <div className="p-4 border-t border-gray-200 flex-shrink-0">
                 <div className="flex items-center gap-2">
                   <Button variant="ghost" size="sm" className="p-2">
                     <Paperclip className="w-4 h-4" />
