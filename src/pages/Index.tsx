@@ -139,7 +139,7 @@ const Index = () => {
         }`}
       >
         <TopNavigation activeTab={activeTab} onTabChange={setActiveTab} />
-        <main className="flex-1 overflow-auto p-6">
+        <main className="flex-1 overflow-hidden p-6">
           {activeTab === "Board" && (
             <KanbanBoard
               initialColumns={columns}
