@@ -328,7 +328,7 @@ const KanbanBoard = ({
             {columns.map((column) => (
               <div
                 key={column.id}
-                className="bg-white rounded-lg w-[320px] flex flex-col h-[calc(100vh-200px)]"
+                className="bg-gray-50 rounded-lg w-[320px] flex flex-col h-[calc(100vh-200px)]"
               >
                 <div className="flex items-center justify-between p-4 border-b border-gray-200 flex-shrink-0">
                   <div className="flex items-center space-x-2">
