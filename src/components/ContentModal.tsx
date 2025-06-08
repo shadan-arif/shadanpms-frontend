@@ -15,12 +15,21 @@ import {
   ListOrdered,
   Link,
   MoreVertical,
+  ChevronDown,
 } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Post } from "@/types/post";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 
 interface Message {
   id: string;
@@ -86,6 +95,9 @@ const ContentModal = ({
   const [scheduledDate, setScheduledDate] = useState("");
   const [scheduledTime, setScheduledTime] = useState("");
   const [assignee, setAssignee] = useState("");
+  const [status, setStatus] = useState("");
+  const [platform, setPlatform] = useState("");
+  const [autoPost, setAutoPost] = useState(false);
   const [notes, setNotes] = useState("");
   const [uploadedImage, setUploadedImage] = useState("");
   const [activeTab, setActiveTab] = useState<"internal" | "client">("internal");
@@ -114,6 +126,9 @@ const ContentModal = ({
       setScheduledDate(editingPost.date || "");
       setScheduledTime(editingPost.time || "");
       setAssignee(editingPost.author || "");
+      setStatus("");
+      setPlatform("");
+      setAutoPost(false);
       setNotes(editingPost.notes || "");
       setUploadedImage(editingPost.image || "");
     } else {
@@ -122,6 +137,9 @@ const ContentModal = ({
       setScheduledDate("Wed, Jan 17, 2025");
       setScheduledTime("07:00 AM");
       setAssignee("");
+      setStatus("");
+      setPlatform("");
+      setAutoPost(false);
       setNotes("");
       setUploadedImage("");
     }
@@ -145,6 +163,12 @@ const ContentModal = ({
         break;
       case "assignee":
         setAssignee(value);
+        break;
+      case "status":
+        setStatus(value);
+        break;
+      case "platform":
+        setPlatform(value);
         break;
       case "notes":
         setNotes(value);
@@ -211,6 +235,9 @@ const ContentModal = ({
       setScheduledDate(prevPost.date || "");
       setScheduledTime(prevPost.time || "");
       setAssignee(prevPost.author || "");
+      setStatus("");
+      setPlatform("");
+      setAutoPost(false);
       setNotes(prevPost.notes || "");
       setUploadedImage(prevPost.image || "");
     }
@@ -229,6 +256,9 @@ const ContentModal = ({
       setScheduledDate(nextPost.date || "");
       setScheduledTime(nextPost.time || "");
       setAssignee(nextPost.author || "");
+      setStatus("");
+      setPlatform("");
+      setAutoPost(false);
       setNotes(nextPost.notes || "");
       setUploadedImage(nextPost.image || "");
     }
@@ -247,7 +277,7 @@ const ContentModal = ({
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="max-w-6xl p-0 overflow-hidden">
-        <div className="bg-white rounded-lg shadow-lg h-full flex flex-col">
+        <div className="bg-white rounded-lg shadow-lg flex flex-col">
           {/* Header */}
           <div className="flex items-center justify-between p-6 pb-4">
             <div className="flex items-center gap-4">
@@ -302,9 +332,9 @@ const ContentModal = ({
           {/* Main content area */}
           <div className="flex flex-1 overflow-hidden">
             {/* Left panel - Content editor */}
-            <div className="flex-1 overflow-y-auto">
-              <div className="px-6 pt-6">
-                <div className="flex gap-6 mb-6">
+            <div className="flex-1">
+              <div className="px-6 pt-4">
+                <div className="flex gap-6 mb-4">
                   {/* Image upload section */}
                   <div className="flex flex-col">
                     <div
@@ -368,11 +398,11 @@ const ContentModal = ({
 
                   {/* Form fields */}
                   <div className="flex-1">
-                    <h1 className="text-xl font-medium mb-8">
+                    <h1 className="text-xl font-medium mb-4">
                       {editingPost ? "Edit Content - Idea" : title}
                     </h1>
 
-                    <div className="space-y-6">
+                    <div className="space-y-3">
                       {/* Assignee */}
                       <div className="flex items-center gap-4">
                         <label className="text-sm text-gray-700 w-20 flex-shrink-0">
@@ -434,6 +464,72 @@ const ContentModal = ({
                           />
                         </div>
                       </div>
+
+                      {/* Status */}
+                      <div className="flex items-center gap-4">
+                        <label className="text-sm text-gray-700 w-20 flex-shrink-0">
+                          Status
+                        </label>
+                        <div className="flex-1 max-w-xs">
+                          <Select value={status} onValueChange={setStatus}>
+                            <SelectTrigger className="h-9 border-gray-200">
+                              <SelectValue placeholder="Status" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="draft">Draft</SelectItem>
+                              <SelectItem value="review">Review</SelectItem>
+                              <SelectItem value="approved">Approved</SelectItem>
+                              <SelectItem value="published">
+                                Published
+                              </SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+
+                      {/* Platform */}
+                      <div className="flex items-center gap-4">
+                        <label className="text-sm text-gray-700 w-20 flex-shrink-0">
+                          Platform
+                        </label>
+                        <div className="flex gap-3 flex-1 max-w-xs">
+                          <Select value={platform} onValueChange={setPlatform}>
+                            <SelectTrigger className="h-9 border-gray-200 flex-1">
+                              <SelectValue placeholder="Platform" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="instagram">
+                                Instagram
+                              </SelectItem>
+                              <SelectItem value="facebook">Facebook</SelectItem>
+                              <SelectItem value="tiktok">TikTok</SelectItem>
+                              <SelectItem value="twitter">Twitter</SelectItem>
+                              <SelectItem value="linkedin">LinkedIn</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="h-9 w-9 p-0 border-gray-200"
+                          >
+                            <Plus className="w-4 h-4 text-gray-400" />
+                          </Button>
+                        </div>
+                      </div>
+
+                      {/* Auto Post */}
+                      <div className="flex items-center gap-4">
+                        <label className="text-sm text-gray-700 w-20 flex-shrink-0">
+                          Auto Post
+                        </label>
+                        <div className="flex items-center">
+                          <Switch
+                            checked={autoPost}
+                            onCheckedChange={setAutoPost}
+                            className="data-[state=checked]:bg-green-500"
+                          />
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -441,13 +537,13 @@ const ContentModal = ({
 
               {/* Notes section */}
               <div className="border-t border-gray-200">
-                <div className="py-6 space-y-4">
+                <div className="py-4 space-y-3">
                   <div className="px-6">
                     <Textarea
                       value={notes}
                       onChange={(e) => handleChange("notes", e.target.value)}
                       placeholder="Write notes for your editors, ideas, examples..."
-                      className="min-h-[180px] resize-none border-gray-200 text-sm w-full"
+                      className="min-h-[100px] resize-none border-gray-200 text-sm w-full"
                     />
                   </div>
 
