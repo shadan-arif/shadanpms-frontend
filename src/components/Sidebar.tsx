@@ -10,6 +10,7 @@ import {
   Headphones,
   ChevronLeft,
   ChevronRight,
+  ChevronRight as ChevronRightSmall,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -122,7 +123,14 @@ const Sidebar = ({ collapsed, onToggle, onNavigate }: SidebarProps) => {
               onClick={() => setSocialSpacesExpanded(!socialSpacesExpanded)}
               className="w-full flex items-center justify-between px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 rounded-md transition-colors"
             >
-              <span className="font-medium">Social Spaces</span>
+              <div className="flex items-center space-x-2">
+                <ChevronRightSmall
+                  className={`w-3 h-3 text-gray-400 transition-transform ${
+                    socialSpacesExpanded ? "rotate-90" : ""
+                  }`}
+                />
+                <span className="font-medium">Social Spaces</span>
+              </div>
               <Plus className="w-4 h-4" />
             </button>
 
