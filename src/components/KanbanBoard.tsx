@@ -414,14 +414,14 @@ const KanbanBoard = ({
                               </button>
                             </div>
                           ) : (
-                            <div className="space-y-4">
+                            <div className="space-y-1">
                               {column.posts.map((post, index) => (
-                                <div key={post.id}>
-                                  {/* Show drag preview at the correct position */}
+                                <div key={post.id} className="relative">
+                                  {/* Show drag preview at the correct position with absolute positioning */}
                                   {draggedPost &&
                                     dragOverColumn === column.id &&
                                     dragOverIndex === index && (
-                                      <div className="pointer-events-none">
+                                      <div className="absolute top-0 left-0 w-full pointer-events-none z-10">
                                         <DragPreview post={draggedPost} />
                                       </div>
                                     )}
@@ -435,6 +435,13 @@ const KanbanBoard = ({
                                         {...provided.draggableProps}
                                         {...provided.dragHandleProps}
                                         onClick={() => handleEditPost(post)}
+                                        className={
+                                          draggedPost &&
+                                          dragOverColumn === column.id &&
+                                          dragOverIndex === index
+                                            ? "opacity-30"
+                                            : ""
+                                        }
                                       >
                                         <PostCard post={post} />
                                       </div>

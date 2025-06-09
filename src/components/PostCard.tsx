@@ -81,7 +81,7 @@ const PostCard = ({ post }: PostCardProps) => {
 
   return (
     <div
-      className="text-card-foreground overflow-hidden bg-white shadow-sm border border-gray-200 rounded-xl transition-all duration-200 hover:shadow-md relative select-none p-3 mb-3 cursor-grab hover:cursor-grab"
+      className="text-card-foreground overflow-hidden bg-white shadow-sm border border-gray-200 rounded-xl transition-all duration-200 hover:shadow-md relative select-none p-3 cursor-grab hover:cursor-grab"
       draggable="true"
       role="button"
       tabIndex={0}

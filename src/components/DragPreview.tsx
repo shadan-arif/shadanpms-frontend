@@ -80,7 +80,7 @@ const DragPreview = ({ post }: DragPreviewProps) => {
   };
 
   return (
-    <div className="text-gray-400 overflow-hidden bg-gray-200 shadow-md border-2 border-dashed border-gray-300 rounded-xl relative select-none p-3 mb-3 opacity-80">
+    <div className="text-gray-400 overflow-hidden bg-gray-200 shadow-md border-2 border-dashed border-gray-300 rounded-xl relative select-none p-3 opacity-80">
       {/* Grip Handle */}
       <div className="absolute top-2 right-2 opacity-60">
         <GripVertical className="h-4 w-4 text-gray-400" />
