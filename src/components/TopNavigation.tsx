@@ -92,15 +92,15 @@ const TopNavigation = ({ activeTab, onTabChange }: TopNavigationProps) => {
           </div>
         </div>
 
-        <div className="flex border-b border-gray-200">
+        <div className="flex border-b border-gray-200 px-6">
           {tabs.map((tab) => (
             <button
               key={tab.name}
               onClick={() => handleTabClick(tab.name)}
-              className={`flex items-center px-6 py-3 text-sm font-medium ${
+              className={`inline-flex items-center justify-center gap-2 whitespace-nowrap ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2 text-base font-medium rounded-none transition-all border-b-2 ${
                 activeTab === tab.name
-                  ? "text-blue-600 border-b-2 border-blue-600"
-                  : "text-gray-500 hover:text-gray-700"
+                  ? "text-[#141C25] border-[#141C25]"
+                  : "text-gray-600 hover:text-gray-900 border-transparent"
               }`}
             >
               <tab.icon className="h-4 w-4 mr-2" />
