@@ -105,7 +105,7 @@ const PostCard = ({ post }: PostCardProps) => {
         </div>
 
         <div className="flex-1 min-w-0">
-          <h4 className="font-medium text-gray-900 text-sm mb-2 leading-tight">
+          <h4 className="font-medium text-gray-900 text-sm mb-2 leading-tight pt-2">
             {post.title}
           </h4>
 
