@@ -356,7 +356,8 @@ const ContentModal = ({
                   {/* Image upload section */}
                   <div className="flex flex-col flex-shrink-0">
                     <div
-                      className="w-56 h-56 border-2 border-dashed border-gray-200 rounded-lg flex flex-col items-center justify-center text-center bg-white cursor-pointer hover:border-gray-300 transition-colors"
+                      className="border-2 border-dashed border-gray-200 rounded-lg flex flex-col items-center justify-center text-center bg-white cursor-pointer hover:border-gray-300 transition-colors"
+                      style={{ width: "280px", height: "280px" }}
                       onClick={() =>
                         document.getElementById("image-upload")?.click()
                       }
@@ -396,7 +397,10 @@ const ContentModal = ({
                       )}
                     </div>
                     <div className="mt-4">
-                      <div className="w-12 h-12 border border-dashed border-gray-300 rounded flex items-center justify-center cursor-pointer hover:border-gray-400 transition-colors">
+                      <div
+                        className="border border-dashed border-gray-300 rounded flex items-center justify-center cursor-pointer hover:border-gray-400 transition-colors"
+                        style={{ width: "70px", height: "70px" }}
+                      >
                         <Plus className="w-6 h-6 text-gray-400" />
                       </div>
                     </div>
