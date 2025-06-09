@@ -4,9 +4,12 @@ import {
   Droppable,
   Draggable,
   DropResult,
+  DragStart,
+  DragUpdate,
 } from "@hello-pangea/dnd";
 import { Plus, MoreHorizontal } from "lucide-react";
 import PostCard from "./PostCard";
+import DragPreview from "./DragPreview";
 import ContentModal from "./ContentModal";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Post } from "@/types/post";
@@ -32,6 +35,9 @@ const KanbanBoard = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingPost, setEditingPost] = useState<Post | null>(null);
   const [triggerColumnId, setTriggerColumnId] = useState<string>("");
+  const [draggedPost, setDraggedPost] = useState<Post | null>(null);
+  const [dragOverColumn, setDragOverColumn] = useState<string | null>(null);
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
   const [columns, setColumns] = useState<Column[]>([
     {
       id: "idea",
@@ -211,8 +217,33 @@ const KanbanBoard = ({
     },
   ]);
 
+  const onDragStart = (start: DragStart) => {
+    const sourceColumn = columns.find(
+      (col) => col.id === start.source.droppableId
+    );
+    if (sourceColumn) {
+      const draggedPost = sourceColumn.posts[start.source.index];
+      setDraggedPost(draggedPost);
+    }
+  };
+
+  const onDragUpdate = (update: DragUpdate) => {
+    if (update.destination) {
+      setDragOverColumn(update.destination.droppableId);
+      setDragOverIndex(update.destination.index);
+    } else {
+      setDragOverColumn(null);
+      setDragOverIndex(null);
+    }
+  };
+
   const onDragEnd = (result: DropResult) => {
     const { destination, source } = result;
+
+    // Clear dragged post state
+    setDraggedPost(null);
+    setDragOverColumn(null);
+    setDragOverIndex(null);
 
     if (!destination) return;
     if (
@@ -322,7 +353,11 @@ const KanbanBoard = ({
 
   return (
     <>
-      <DragDropContext onDragEnd={onDragEnd}>
+      <DragDropContext
+        onDragStart={onDragStart}
+        onDragUpdate={onDragUpdate}
+        onDragEnd={onDragEnd}
+      >
         <div className="overflow-x-auto pb-4">
           <div className="flex gap-4 min-w-max">
             {columns.map((column) => (
@@ -381,26 +416,40 @@ const KanbanBoard = ({
                           ) : (
                             <div className="space-y-4">
                               {column.posts.map((post, index) => (
-                                <Draggable
-                                  key={post.id}
-                                  draggableId={post.id}
-                                  index={index}
-                                >
-                                  {(provided, snapshot) => (
-                                    <div
-                                      ref={provided.innerRef}
-                                      {...provided.draggableProps}
-                                      {...provided.dragHandleProps}
-                                      className={
-                                        snapshot.isDragging ? "shadow-lg" : ""
-                                      }
-                                      onClick={() => handleEditPost(post)}
-                                    >
-                                      <PostCard post={post} />
-                                    </div>
-                                  )}
-                                </Draggable>
+                                <div key={post.id}>
+                                  {/* Show drag preview at the correct position */}
+                                  {draggedPost &&
+                                    dragOverColumn === column.id &&
+                                    dragOverIndex === index && (
+                                      <div className="pointer-events-none">
+                                        <DragPreview post={draggedPost} />
+                                      </div>
+                                    )}
+                                  <Draggable
+                                    draggableId={post.id}
+                                    index={index}
+                                  >
+                                    {(provided) => (
+                                      <div
+                                        ref={provided.innerRef}
+                                        {...provided.draggableProps}
+                                        {...provided.dragHandleProps}
+                                        onClick={() => handleEditPost(post)}
+                                      >
+                                        <PostCard post={post} />
+                                      </div>
+                                    )}
+                                  </Draggable>
+                                </div>
                               ))}
+                              {/* Show drag preview at the end if dropping at the end */}
+                              {draggedPost &&
+                                dragOverColumn === column.id &&
+                                dragOverIndex === column.posts.length && (
+                                  <div className="pointer-events-none">
+                                    <DragPreview post={draggedPost} />
+                                  </div>
+                                )}
                             </div>
                           )}
                           {provided.placeholder}
