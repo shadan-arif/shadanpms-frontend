@@ -435,13 +435,6 @@ const KanbanBoard = ({
                                         {...provided.draggableProps}
                                         {...provided.dragHandleProps}
                                         onClick={() => handleEditPost(post)}
-                                        className={
-                                          draggedPost &&
-                                          dragOverColumn === column.id &&
-                                          dragOverIndex === index
-                                            ? "opacity-30"
-                                            : ""
-                                        }
                                       >
                                         <PostCard post={post} />
                                       </div>
