@@ -459,7 +459,7 @@ const ContentModal = ({
                         <label className="text-sm text-gray-700 w-20 flex-shrink-0">
                           Assignee
                         </label>
-                        <div className="relative flex-1 max-w-xs">
+                        <div className="relative flex-1">
                           <Input
                             value={assignee}
                             onChange={(e) =>
@@ -496,13 +496,13 @@ const ContentModal = ({
                         <label className="text-sm text-gray-700 w-20 flex-shrink-0">
                           Schedule
                         </label>
-                        <div className="flex gap-3">
+                        <div className="flex gap-3 flex-1">
                           <Input
                             value={scheduledDate}
                             onChange={(e) =>
                               handleChange("scheduledDate", e.target.value)
                             }
-                            className="w-36 text-sm border-gray-200 h-9"
+                            className="flex-1 text-sm border-gray-200 h-9"
                             readOnly
                           />
                           <Input
@@ -510,7 +510,7 @@ const ContentModal = ({
                             onChange={(e) =>
                               handleChange("scheduledTime", e.target.value)
                             }
-                            className="w-20 text-sm border-gray-200 h-9"
+                            className="w-24 text-sm border-gray-200 h-9"
                             readOnly
                           />
                         </div>
@@ -521,7 +521,7 @@ const ContentModal = ({
                         <label className="text-sm text-gray-700 w-20 flex-shrink-0">
                           Status
                         </label>
-                        <div className="flex-1 max-w-xs">
+                        <div className="flex-1">
                           <Select value={status} onValueChange={setStatus}>
                             <SelectTrigger className="h-9 border-gray-200">
                               <SelectValue placeholder="Status" />
@@ -543,7 +543,7 @@ const ContentModal = ({
                         <label className="text-sm text-gray-700 w-20 flex-shrink-0">
                           Platform
                         </label>
-                        <div className="flex gap-3 flex-1 max-w-xs">
+                        <div className="flex gap-3 flex-1">
                           <Select value={platform} onValueChange={setPlatform}>
                             <SelectTrigger className="h-9 border-gray-200 flex-1">
                               <SelectValue placeholder="Platform" />
