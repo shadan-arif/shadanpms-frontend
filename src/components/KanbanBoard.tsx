@@ -392,9 +392,7 @@ const KanbanBoard = ({
                                       {...provided.draggableProps}
                                       {...provided.dragHandleProps}
                                       className={
-                                        snapshot.isDragging
-                                          ? "rotate-3 shadow-lg"
-                                          : ""
+                                        snapshot.isDragging ? "shadow-lg" : ""
                                       }
                                       onClick={() => handleEditPost(post)}
                                     >
