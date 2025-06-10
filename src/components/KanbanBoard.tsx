@@ -255,6 +255,8 @@ const KanbanBoard = ({
     setDraggedPost(null);
     setDragOverColumn(null);
     setDragOverIndex(null);
+    setOriginalIndex(null);
+    setOriginalColumn(null);
 
     if (!destination) return;
     if (
