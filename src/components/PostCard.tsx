@@ -129,13 +129,18 @@ const PostCard = ({ post }: PostCardProps) => {
 
       {/* Bottom Section */}
       <div className="flex items-center justify-between mt-3 pt-2">
-        <span className="relative flex shrink-0 overflow-hidden rounded-full h-6 w-6">
-          <img
-            className="aspect-square h-full w-full"
-            src="https://images.unsplash.com/photo-1472396961693-142e6e269027?w=24&h=24&fit=crop&crop=face"
-            alt="Avatar"
-          />
-        </span>
+        <div className="flex items-center space-x-2">
+          <span className="relative flex shrink-0 overflow-hidden rounded-full h-6 w-6">
+            <img
+              className="aspect-square h-full w-full"
+              src="https://images.unsplash.com/photo-1472396961693-142e6e269027?w=24&h=24&fit=crop&crop=face"
+              alt="Avatar"
+            />
+          </span>
+          <span className="text-gray-700 text-xs font-medium">
+            {post.author}
+          </span>
+        </div>
         <div className="flex items-center text-gray-400 text-xs">
           <MessageCircle className="h-4 w-4 mr-1" />
           <span>0</span>
