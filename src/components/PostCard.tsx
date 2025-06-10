@@ -104,17 +104,17 @@ const PostCard = ({ post }: PostCardProps) => {
           />
         </div>
 
-        <div className="flex-1 min-w-0">
-          <h4 className="font-medium text-gray-900 text-sm mb-2 leading-tight pt-2">
+        <div className="flex-1 min-w-0 flex flex-col justify-center h-28">
+          <h4 className="font-medium text-gray-900 text-sm mb-2 leading-tight">
             {post.title}
           </h4>
 
-          <div className="flex items-center text-gray-500 text-xs mb-1">
+          <div className="flex items-center text-gray-500 text-xs mb-2">
             <Calendar className="h-3 w-3 mr-1.5 flex-shrink-0" />
             <span>{post.date}</span>
           </div>
 
-          <div className="flex items-center text-gray-500 text-xs mb-3">
+          <div className="flex items-center text-gray-500 text-xs mb-2">
             <Clock className="h-3 w-3 mr-1.5 flex-shrink-0" />
             <span>{post.time}</span>
           </div>
