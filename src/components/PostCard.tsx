@@ -106,7 +106,7 @@ const PostCard = ({ post }: PostCardProps) => {
 
         <div className="flex-1 min-w-0 flex flex-col justify-center h-28">
           <h4 className="font-medium text-gray-900 text-sm mb-2 leading-tight">
-            {post.title}
+            {post.title} - {post.id}
           </h4>
 
           <div className="flex items-center text-gray-500 text-xs mb-2">

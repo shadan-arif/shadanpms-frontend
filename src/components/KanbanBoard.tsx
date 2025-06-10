@@ -38,6 +38,8 @@ const KanbanBoard = ({
   const [draggedPost, setDraggedPost] = useState<Post | null>(null);
   const [dragOverColumn, setDragOverColumn] = useState<string | null>(null);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
+  const [originalIndex, setOriginalIndex] = useState<number | null>(null);
+  const [originalColumn, setOriginalColumn] = useState<string | null>(null);
   const [columns, setColumns] = useState<Column[]>([
     {
       id: "idea",
@@ -218,17 +220,22 @@ const KanbanBoard = ({
   ]);
 
   const onDragStart = (start: DragStart) => {
+    console.log("Dragged post", start);
     const sourceColumn = columns.find(
       (col) => col.id === start.source.droppableId
     );
     if (sourceColumn) {
       const draggedPost = sourceColumn.posts[start.source.index];
       setDraggedPost(draggedPost);
+      setOriginalIndex(start.source.index);
+      setOriginalColumn(start.source.droppableId);
     }
   };
 
   const onDragUpdate = (update: DragUpdate) => {
+    console.log("Drag update", update);
     if (update.destination) {
+      console.log("Drag update destination", update.destination);
       setDragOverColumn(update.destination.droppableId);
       setDragOverIndex(update.destination.index);
     } else {
@@ -237,7 +244,11 @@ const KanbanBoard = ({
     }
   };
 
+  console.log("Drag over column", dragOverColumn);
+  console.log("Drag over index", dragOverIndex);
+
   const onDragEnd = (result: DropResult) => {
+    console.log("Drag end", result);
     const { destination, source } = result;
 
     // Clear dragged post state
@@ -420,7 +431,12 @@ const KanbanBoard = ({
                                   {/* Show drag preview at the correct position with absolute positioning */}
                                   {draggedPost &&
                                     dragOverColumn === column.id &&
-                                    dragOverIndex === index && (
+                                    dragOverIndex ===
+                                      (dragOverColumn === originalColumn
+                                        ? dragOverIndex >= originalIndex
+                                          ? index - 1
+                                          : index
+                                        : index) && (
                                       <div className="absolute top-0 left-0 w-full pointer-events-none z-10">
                                         <DragPreview post={draggedPost} />
                                       </div>
@@ -445,7 +461,12 @@ const KanbanBoard = ({
                               {/* Show drag preview at the end if dropping at the end */}
                               {draggedPost &&
                                 dragOverColumn === column.id &&
-                                dragOverIndex === column.posts.length && (
+                                dragOverIndex ===
+                                  (dragOverColumn === originalColumn
+                                    ? dragOverIndex >= originalIndex
+                                      ? column.posts.length - 1
+                                      : column.posts.length
+                                    : column.posts.length) && (
                                   <div className="pointer-events-none">
                                     <DragPreview post={draggedPost} />
                                   </div>
